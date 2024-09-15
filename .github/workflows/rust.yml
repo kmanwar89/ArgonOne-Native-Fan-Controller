@@ -31,3 +31,4 @@ jobs:
           argon_fan_controller.service
           argon_fan_controller_cfg.yml
           deploy.sh
+          remove.sh
