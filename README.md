@@ -38,7 +38,7 @@ There are several ways to retrieve the CPU temp:
 
 2. Use the `vcgencmd` to interact with the VideoCore tool. For more information, see the [official Raspberry Pi Foundation documentation](https://www.raspberrypi.com/documentation/computers/os.html#vcgencmd) on this tool.
     - Sample syntax: `vcgencmd measure_temp`
-          - Output: `temp=42.8'C`
+    - Output: `temp=42.8'C`
 
 # How to build
 You need install on your operating system gcc aarch64 toolchain. 
