@@ -17,6 +17,7 @@ The configuration file contains two directives: "interval" and "fan"
     - The higher it is, the lower the CPU usage (and conversely, the lower the value, the more CPU usage is expected).
 - Fan is an array of pairs, represented as temperature plus fan speed in %
     - These values must be listed in increasing (incrementing) order
+- After editing the configuration file, simply issue `sudo systemctl restart argon_fan_controller.service` to apply the changes.
 
 # Example configuration file
 The following example will activate the fan control process every 500 milliseconds; the fan will run at 30% speed @ 50C, 60% speed @ 65C and 100% speed @ 70C:
