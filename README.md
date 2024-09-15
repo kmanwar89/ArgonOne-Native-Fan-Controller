@@ -3,7 +3,7 @@ Written in Rust fan control daemon for Argon One v2 case for Raspberry Pi 4B. Fu
 Easy to integrate with your operating system image building tools.
 
 # How to use
-In the [releases](https://github.com/JhnW/ArgonOne-Native-Fan-Controller/releases) tab there are already built files for Linux along with some supporting files. Download the 'package.zip' file and extract it on the Pi 4. The archive comes standard with a binary that depends on the presence of a configuration file (argon_fan_controller_cfg.yml). To build another feature variant, see the 'how to build' section.
+In the [releases](https://github.com/JhnW/ArgonOne-Native-Fan-Controller/releases) tab there are already built files for Linux along with some supporting files. Download the 'package.zip' file and extract it on the Pi 4. The archive comes standard with a binary that depends on the presence of a configuration file (argon_fan_controller_cfg.yml). To build another feature variant, see the [how to build](https://github.com/kmanwar89/ArgonOne-Native-Fan-Controller/blob/main/README.md#configuration-file) section.
 
 The repository and build artifacts contain several additional files:
 - argon_fan_controller.service; file needed by systemd
