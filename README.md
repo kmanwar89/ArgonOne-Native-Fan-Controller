@@ -13,8 +13,8 @@ The repository and build artifacts contain several additional files:
 # Configuration file
 The configuration file contains two directives: "interval" and "fan"
 
-- The interval specifies the time between successive wakeup 
-of the fan control process. The higher it is, the lower the CPU usage (and conversely, the lower the value, the more CPU usage is expected).
+- The interval specifies the time between successive wakeup of the fan control process (in milliseconds)
+    - The higher it is, the lower the CPU usage (and conversely, the lower the value, the more CPU usage is expected).
 - Fan is an array of pairs, represented as temperature plus fan speed in %
     - These values must be listed in increasing (incrementing) order
 
