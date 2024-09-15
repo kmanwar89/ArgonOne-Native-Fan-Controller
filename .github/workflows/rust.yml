@@ -12,13 +12,17 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
     - name: Configure
       run: |
         sudo apt-get update
         rustup target add aarch64-unknown-linux-gnu
         sudo apt-get install gcc-aarch64-linux-gnu
+
     - name: Build standard (config file)
       run: cargo build --target aarch64-unknown-linux-gnu --release
 
@@ -29,17 +33,18 @@ jobs:
       run: cp target/aarch64-unknown-linux-gnu/release/argon_fan_controller ./
 
     - name: Create Release
-    - uses: actions/create-release@v1
+      id: create_release
+      uses: actions/create-release@v1
 
     - name: Upload Release Asset
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-release-asset@v1
       with:
-        name: argon_fan_controller_standard
-        path: |
+        asset_path: |
           argon_fan_controller 
           argon_fan_controller.service
           argon_fan_controller_cfg.yml
           deploy.sh
           remove.sh
           get_temps.sh
-        content_type: application/zip
+        asset_name: argon_fan_controller.zip
+        asset_content_type: application/zip
