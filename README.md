@@ -48,6 +48,8 @@ There are several ways to retrieve the CPU temp:
     - Sample syntax: `vcgencmd measure_temp`
     - Output: `temp=42.8'C`
 
+The Pi 4 will begin throtlling at either 85C [source](https://raspberrytips.com/raspberry-pi-temperature/) or 80C according to [Tom's hardware](https://www.tomshardware.com/reviews/argon-one-m-2-case-raspberry-pi-4) so it is important to maintain temps below this value. Unless you are running heavy workloads on your Pi (transcoding, crypto mining, etc.) it's unlikely you will reach these temperatures during normal usage.
+
 # How to build
 You need install on your operating system gcc aarch64 toolchain. 
 Rust need gcc linker for that architecture. Next just write for standard build:
