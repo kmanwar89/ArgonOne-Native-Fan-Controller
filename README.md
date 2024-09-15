@@ -7,7 +7,7 @@ In the [releases](https://github.com/JhnW/ArgonOne-Native-Fan-Controller/release
 
 The repository and build artifacts contain several additional files:
 - argon_fan_controller.service; file needed by systemd
-- argon_fan_controller_cfg.yml; example configuration. See "Configuration file" for usage information
+- argon_fan_controller_cfg.yml; example configuration. See [Configuration file](https://github.com/kmanwar89/ArgonOne-Native-Fan-Controller/blob/main/README.md#configuration-file) for usage information
 - deploy.sh; simple script to copy files to destination folders, enable i2c, and setup systemd service.
 
 # Configuration file
