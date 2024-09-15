@@ -2,6 +2,7 @@
 
 #enable i2c, raspi-config should be preinstalled on all popular OS, if you use other way to enable i2c, jus>
 sudo raspi-config nonint do_i2c 0
+echo "i2c has been enabled"
 
 #copy configuration file if exist
 if test -f "argon_fan_controller_cfg.yml"; then
