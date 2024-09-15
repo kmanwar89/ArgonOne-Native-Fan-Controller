@@ -29,6 +29,17 @@ fan: [50, 30, 65, 60, 70, 100]
 
 The syntax for the 'fan' directive is: temp, fan speed, temp, fan speed, temp fan speed
 
+# What's my temp?
+There are several ways to retrieve the CPU temp:
+
+1. Use a resource monitor such as [btop](https://github.com/aristocratos/btop) which displays CPU temps, usage and other useful information in a terminal-graphics format.
+
+![image](https://github.com/user-attachments/assets/cd83add8-c923-4dd8-bcd0-936e7620de80)
+
+2. Use the `vcgencmd` to interact with the VideoCore tool. For more information, see the [official Raspberry Pi Foundation documentation](https://www.raspberrypi.com/documentation/computers/os.html#vcgencmd) on this tool.
+    - Sample syntax: `vcgencmd measure_temp`
+          - Output: `temp=42.8'C`
+
 # How to build
 You need install on your operating system gcc aarch64 toolchain. 
 Rust need gcc linker for that architecture. Next just write for standard build:
