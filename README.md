@@ -27,6 +27,14 @@ interval: 500
 fan: [50, 30, 65, 60, 70, 100]
 ```
 
+# Defaults
+Default values are as follows:
+
+```
+interval: 1500
+fan: [55, 10, 60, 55, 65, 100]
+```
+
 The syntax for the 'fan' directive is: temp, fan speed, temp, fan speed, temp fan speed
 
 # What's my temp?
