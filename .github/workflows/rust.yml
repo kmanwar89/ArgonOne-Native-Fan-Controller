@@ -42,11 +42,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-<<<<<<< HEAD
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-=======
->>>>>>> c57fa63 (Updated rust.yml file)
         tag_name: ${{ steps.extract_tag.outputs.tag }}
         release_name: Release ${{ steps.extract_tag.outputs.tag }}
         draft: false
