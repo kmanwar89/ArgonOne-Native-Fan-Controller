@@ -26,6 +26,9 @@ jobs:
     - name: Build standard (config file)
       run: cargo build --target aarch64-unknown-linux-gnu --release
 
+    - name: Build defaults (no config file)
+      run: cargo build --target aarch64-unknown-linux-gnu --release --no-default-features
+
     - name: List build artifacts
       run: ls -la target/aarch64-unknown-linux-gnu/release/
 
@@ -35,6 +38,23 @@ jobs:
     - name: Extract Tag Name
       id: extract_tag
       run: echo "::set-output name=tag::${GITHUB_REF##*/}"
+
+    - name: Check if Release Exists
+      id: check_release
+      run: |
+        response=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ steps.extract_tag.outputs.tag }})
+        http_status=$(echo $response | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+        if [ "$http_status" == "200" ]; then
+          release_id=$(echo $response | sed -e 's/HTTPSTATUS:.*//g' | jq .id)
+          echo "::set-output name=release_id::$release_id"
+        else
+          echo "::set-output name=release_id::"
+        fi
+
+    - name: Delete Existing Release
+      if: steps.check_release.outputs.release_id
+      run: |
+        curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/${{ steps.check_release.outputs.release_id }}
 
     - name: Create Release
       id: create_release
