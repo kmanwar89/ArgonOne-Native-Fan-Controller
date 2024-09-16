@@ -2,9 +2,11 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - "v*"
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - "main"
 
 env:
   CARGO_TERM_COLOR: always
@@ -32,29 +34,39 @@ jobs:
     - name: List build artifacts
       run: ls -la target/aarch64-unknown-linux-gnu/release/
 
-    - name: Copy binary
-      run: cp target/aarch64-unknown-linux-gnu/release/argon_fan_controller ./
+    - name: Copy binary and other files
+      run: |
+        cp target/aarch64-unknown-linux-gnu/release/argon_fan_controller .
+        cp argon_fan_controller.service .
+        cp argon_fan_controller_cfg.yml .
+        cp deploy.sh .
+        cp remove.sh .
+        cp get_temps.sh .
+    
+    - name: Ensure files exist
+      run: ls -la argon_fan_controller argon_fan_controller.service argon_fan_controller_cfg.yml deploy.sh remove.sh get_temps.sh
 
     - name: Extract Tag Name
       id: extract_tag
-      run: echo "::set-output name=tag::${GITHUB_REF##*/}"
+      run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
     - name: Check if Release Exists
       id: check_release
       run: |
-        response=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ steps.extract_tag.outputs.tag }})
+        response=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.tag }})
         http_status=$(echo $response | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
         if [ "$http_status" == "200" ]; then
           release_id=$(echo $response | sed -e 's/HTTPSTATUS:.*//g' | jq .id)
-          echo "::set-output name=release_id::$release_id"
+          echo "release_id=${release_id}" >> $GITHUB_ENV
         else
-          echo "::set-output name=release_id::"
+          echo "release_id=null" >> $GITHUB_ENV
         fi
 
     - name: Delete Existing Release
-      if: steps.check_release.outputs.release_id
+      if: env.release_id != "null"
       run: |
-        curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/${{ steps.check_release.outputs.release_id }}
+        curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/${{ env.release_id }}
+        curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/git/refs/tags/${{ env.tag }}
 
     - name: Create Release
       id: create_release
@@ -62,8 +74,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.extract_tag.outputs.tag }}
-        release_name: Release ${{ steps.extract_tag.outputs.tag }}
+        tag_name: ${{ env.tag }}
+        release_name: Release ${{ env.tag }}
         draft: false
         prerelease: false
 
