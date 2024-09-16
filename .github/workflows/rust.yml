@@ -26,8 +26,8 @@ jobs:
     - name: Build standard (config file)
       run: cargo build --target aarch64-unknown-linux-gnu --release
 
-#    - name: Build defaults (no config file)
-#      run: cargo build --target aarch64-unknown-linux-gnu --release --no-default-features
+    - name: Build defaults (no config file)
+      run: cargo build --target aarch64-unknown-linux-gnu --release --no-default-features
 
     - name: Copy binary
       run: cp target/aarch64-unknown-linux-gnu/release/argon_fan_controller ./
@@ -35,10 +35,20 @@ jobs:
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: |
           argon_fan_controller 
           argon_fan_controller.service
