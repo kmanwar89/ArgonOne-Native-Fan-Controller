@@ -32,6 +32,10 @@ jobs:
     - name: Copy binary
       run: cp target/aarch64-unknown-linux-gnu/release/argon_fan_controller ./
 
+    - name: Extract Tag Name
+      id: extract_tag
+      run: echo "::set-output name=tag::${GITHUB_REF##*/}"
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -40,6 +44,8 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
+        tag_name: ${{ steps.extract_tag.outputs.tag }}
+        release_name: Release ${{ steps.extract_tag.outputs.tag }}
         draft: false
         prerelease: false
 
