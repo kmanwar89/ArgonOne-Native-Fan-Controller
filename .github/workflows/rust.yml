@@ -26,8 +26,8 @@ jobs:
     - name: Build standard (config file)
       run: cargo build --target aarch64-unknown-linux-gnu --release
 
-    - name: Build defaults (no config file)
-      run: cargo build --target aarch64-unknown-linux-gnu --release --no-default-features
+    - name: List build artifacts
+      run: ls -la target/aarch64-unknown-linux-gnu/release/
 
     - name: Copy binary
       run: cp target/aarch64-unknown-linux-gnu/release/argon_fan_controller ./
@@ -54,11 +54,11 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: |
-          argon_fan_controller 
-          argon_fan_controller.service
-          argon_fan_controller_cfg.yml
-          deploy.sh
-          remove.sh
-          get_temps.sh
+          ./argon_fan_controller
+          ./argon_fan_controller.service
+          ./argon_fan_controller_cfg.yml
+          ./deploy.sh
+          ./remove.sh
+          ./get_temps.sh
         asset_name: argon_fan_controller.zip
         asset_content_type: application/zip
